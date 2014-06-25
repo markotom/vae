@@ -1,0 +1,42 @@
+{
+  "name": "alteridadyexclusiones",
+  "version": "0.0.0",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test -R nyan",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:markotom/alteridadyexclusiones.git"
+  },
+  "author": "Marco Godínez <markotom@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/markotom/alteridadyexclusiones/issues"
+  },
+  "homepage": "https://github.com/markotom/alteridadyexclusiones",
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "sinon": "^1.10.2",
+    "mocha": "^1.20.1",
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-test": "^0.11.0",
+    "supertest": "^0.13.0",
+    "grunt-contrib-less": "^0.11.3",
+    "grunt-preprocess": "^4.0.0"
+  },
+  "dependencies": {
+    "express": "^4.4.4",
+    "cookie-parser": "^1.3.1",
+    "method-override": "^2.0.2",
+    "body-parser": "^1.4.3",
+    "express-session": "^1.5.1",
+    "ejs": "^1.0.0"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "alteridadyexclusiones",
+  "version": "0.0.0",
+  "authors": [
+    "Marco Godínez <markotom@gmail.com>"
+  ],
+  "main": "server.js",
+  "license": "MIT",
+  "homepage": "http://ae.filos.unam.mx",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.1.1"
+  }
+}
