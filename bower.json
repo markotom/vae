@@ -9,6 +9,7 @@
   "homepage": "http://ae.filos.unam.mx",
   "private": true,
   "dependencies": {
-    "bootstrap": "~3.1.1"
+    "bootstrap": "~3.1.1",
+    "marionette": "~2.0.1"
   }
 }
