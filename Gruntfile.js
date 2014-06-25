@@ -10,7 +10,7 @@ module.exports = function (grunt) {
       },
       development: {
         files: {
-          'public/built/css/styles.css': 'public/css/styles.less'
+          'public/built/css/styles.css': 'public/styles/styles.less'
         }
       },
       production: {
@@ -18,7 +18,7 @@ module.exports = function (grunt) {
           cleancss: true
         },
         files: {
-          'public/built/css/styles.css': 'public/css/styles.less'
+          'public/built/css/styles.css': 'public/styles/styles.less'
         }
       }
     },
@@ -73,7 +73,7 @@ module.exports = function (grunt) {
         tasks: ['mochaTest']
       },
       less: {
-        files: ['public/css/**/*.less'],
+        files: ['public/styles/**/*.less'],
         tasks: ['less:development'],
         options: {
           spawn: true
