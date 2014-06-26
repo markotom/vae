@@ -11,10 +11,19 @@
     <!-- @endif -->
   </head>
   <body>
-    <div class="wrap">
-      <div id="header"></div>
-      <div id="main"></div>
-    </div>
+    <div id="header"></div>
+    <div id="content"></div>
     <div id="footer"></div>
+
+    <script src="/components/jquery/dist/jquery.js"></script>
+    <script src="/components/underscore/underscore.js"></script>
+    <script src="/components/backbone/backbone.js"></script>
+    <script src="/components/marionette/lib/backbone.marionette.js"></script>
+    <script src="/components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/built/js/jst.js"></script>
+    <script src="/app/app.js"></script>
+    <script type="text/javascript">
+      App.start();
+    </script>
   </body>
 </html>
