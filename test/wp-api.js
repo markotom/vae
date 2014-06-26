@@ -38,7 +38,7 @@ describe('Wordpress JSON API', function () {
         try {
           JSON.parse(res.text);
         } catch (e) {
-          return done('JSON is not a valid!');
+          return done('JSON is not valid!');
         }
 
         done();

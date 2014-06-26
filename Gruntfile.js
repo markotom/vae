@@ -44,6 +44,20 @@ module.exports = function (grunt) {
       }
     },
 
+    jst: {
+      compile: {
+        options: {
+          processName: function (filename) {
+            filename = filename.match(/templates\/(.*)\.html/);
+            return filename[1];
+          }
+        },
+        files: {
+          'public/built/js/jst.js': ['public/app/templates/**/*.html']
+        }
+      }
+    },
+
     watch: {
       configFiles: {
         files: ['Gruntfile.js'],
@@ -64,7 +78,8 @@ module.exports = function (grunt) {
         files: [
           '**/*.js',
           '!node_modules/**/*',
-          '!public/components/**/*'
+          '!public/components/**/*',
+          '!public/built/js/**/*'
         ],
         tasks: ['jshint']
       },
@@ -82,6 +97,10 @@ module.exports = function (grunt) {
       preprocess: {
         files: ['public/_index.ejs'],
         tasks: ['preprocess:development']
+      },
+      jst: {
+        files: ['public/app/templates/**/*.html'],
+        tasks: ['jst']
       }
     },
 
@@ -92,7 +111,8 @@ module.exports = function (grunt) {
       all: [
         '**/*.js',
         '!node_modules/**/*',
-        '!public/components/**/*'
+        '!public/components/**/*',
+        '!public/built/js/**/*'
       ]
     },
 
@@ -111,6 +131,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-preprocess');
+  grunt.loadNpmTasks('grunt-contrib-jst');
 
   grunt.registerTask('build', ['less:production']);
 

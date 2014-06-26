@@ -6,12 +6,16 @@
 
   "predef" : [
     "beforeEach",
+    "Marionette",
     "afterEach",
+    "Backbone",
     "describe",
     "before",
     "after",
+    "JST",
     "xit",
-    "it"
+    "it",
+    "_"
   ],
 
   "globalstrict" : true,
