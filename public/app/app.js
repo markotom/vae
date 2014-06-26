@@ -131,10 +131,10 @@ this.App.module('Entities', function (Entities, App, Backbone) {
 
   Entities.Page = Backbone.Model.extend({
     idAttribute: 'ID',
-    urlRoot: 'http://ae.filos.unam.mx/wp-json/pages?_jsonp=?'
+    urlRoot: 'http://ae.filos.unam.mx/wp-json/posts?type=content&_jsonp=?'
   });
   Entities.Pages = Backbone.Collection.extend({
-    url: 'http://ae.filos.unam.mx/wp-json/pages?_jsonp=?',
+    url: 'http://ae.filos.unam.mx/wp-json/posts?type=content&_jsonp=?',
     model: Entities.Page,
     initialize: function () {
       this.fetch({ dataType: 'jsonp' });
