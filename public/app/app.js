@@ -193,25 +193,6 @@ this.App.module('Welcome', function (Welcome, App, Backbone, Marionette) {
   });
 });
 
-// modules/contents/contents.js
-this.App.module('Contents', function (Contents, App, Backbone, Marionette) {
-  'use strict';
-
-  // router
-  Contents.Router = Marionette.AppRouter.extend({
-    appRoutes: {
-      'pages/:id': 'showPages',
-      'lemas/:id': 'showLemas'
-    }
-  });
-  // initializer
-  App.addInitializer(function () {
-    new Contents.Router({
-      controller: new Contents.Controller()
-    });
-  });
-});
-
 // modules/contents/controller.js
 this.App.module('Contents', function (Contents, App, Backbone, Marionette) {
   'use strict';
@@ -219,12 +200,6 @@ this.App.module('Contents', function (Contents, App, Backbone, Marionette) {
   Contents.Controller = Marionette.Controller.extend({
     initialize: function () {
       App.request('content:entities');
-    },
-    showPages: function (item) {
-      this._show(item, App.module('Pages').Views.Show);
-    },
-    showLemas: function (item) {
-      this._show(item, App.module('Lemas').Views.Show);
     },
     _show: function (item, ShowView) {
       var model = App.request('content:entity', item);
@@ -263,13 +238,32 @@ this.App.module('Entities', function (Entities, App, Backbone) {
   });
 });
 
-// modules/pages/views.js
-this.App.module('Pages', function (Pages, App, Backbone, Marionette) {
+// modules/lemas/lemas.js
+this.App.module('Lemas', function (Lemas, App, Backbone, Marionette) {
   'use strict';
 
-  Pages.Views = {};
-  Pages.Views.Show = Marionette.ItemView.extend({
-    template: 'pages/item'
+  // router
+  Lemas.Router = Marionette.AppRouter.extend({
+    appRoutes: {
+      'lemas/:id': 'show'
+    }
+  });
+  // initializer
+  App.addInitializer(function () {
+    new Lemas.Router({
+      controller: new Lemas.Controller()
+    });
+  });
+});
+
+// modules/lemas/controller.js
+this.App.module('Lemas', function (Lemas, App, Backbone, Marionette) {
+  'use strict';
+
+  Lemas.Controller = App.module('Contents').Controller.extend({
+    show: function (item) {
+      this._show(item, Lemas.Views.Show);
+    }
   });
 });
 
@@ -282,3 +276,43 @@ this.App.module('Lemas', function (Lemas, App, Backbone, Marionette) {
     template: 'lemas/item'
   });
 });
+
+// modules/pages/pages.js
+this.App.module('Pages', function (Pages, App, Backbone, Marionette) {
+  'use strict';
+
+  // router
+  Pages.Router = Marionette.AppRouter.extend({
+    appRoutes: {
+      'pages/:id': 'show'
+    }
+  });
+  // initializer
+  App.addInitializer(function () {
+    new Pages.Router({
+      controller: new Pages.Controller()
+    });
+  });
+});
+
+// modules/pages/controller.js
+this.App.module('Pages', function (Pages, App, Backbone, Marionette) {
+  'use strict';
+
+  Pages.Controller = App.module('Contents').Controller.extend({
+    show: function (item) {
+      this._show(item, Pages.Views.Show);
+    }
+  });
+});
+
+// modules/pages/views.js
+this.App.module('Pages', function (Pages, App, Backbone, Marionette) {
+  'use strict';
+
+  Pages.Views = {};
+  Pages.Views.Show = Marionette.ItemView.extend({
+    template: 'pages/item'
+  });
+});
+
