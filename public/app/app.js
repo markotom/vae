@@ -139,6 +139,24 @@ this.App.module('Footer', function (Footer, App, Backbone, Marionette) {
   });
 });
 
+// modules/welcome/welcome.js
+this.App.module('Welcome', function (Welcome, App, Backbone, Marionette) {
+  'use strict';
+
+  // router
+  Welcome.Router = Marionette.AppRouter.extend({
+    appRoutes: {
+      '': 'welcome'
+    }
+  });
+  // initializer
+  App.addInitializer(function () {
+    new Welcome.Router({
+      controller: new Welcome.Controller()
+    });
+  });
+});
+
 // modules/footer/views.js
 this.App.module('Footer', function (Footer, App, Backbone, Marionette) {
   'use strict';
@@ -149,64 +167,96 @@ this.App.module('Footer', function (Footer, App, Backbone, Marionette) {
   });
 });
 
-// modules/pages/pages.js
-this.App.module('Pages', function (Pages, App, Backbone, Marionette) {
+// modules/welcome/controller.js
+this.App.module('Welcome', function (Welcome, App, Backbone, Marionette) {
+  'use strict';
+
+  Welcome.Controller = Marionette.Controller.extend({
+    initialize: function () {
+      this.region = App.request('default:region');
+    },
+    welcome: function () {
+      this.region.show(new Welcome.Views.Layout());
+    }
+  });
+});
+
+// modules/welcome/views.js
+this.App.module('Welcome', function (Welcome, App, Backbone, Marionette) {
+  'use strict';
+
+  Welcome.Views = {};
+  Welcome.Views.Layout = Marionette.LayoutView.extend({
+    template: 'welcome'
+  });
+});
+
+// modules/contents/contents.js
+this.App.module('Contents', function (Contents, App, Backbone, Marionette) {
   'use strict';
 
   // router
-  Pages.Router = Marionette.AppRouter.extend({
+  Contents.Router = Marionette.AppRouter.extend({
     appRoutes: {
-      'pages/:id': 'show'
+      'pages/:id': 'showPages',
+      'lemas/:id': 'showLemas'
     }
   });
   // initializer
   App.addInitializer(function () {
-    new Pages.Router({
-      controller: new Pages.Controller()
+    new Contents.Router({
+      controller: new Contents.Controller()
     });
   });
 });
 
-// modules/pages/entities.js
-this.App.module('Entities', function (Entities, App, Backbone) {
+// modules/contents/controller.js
+this.App.module('Contents', function (Contents, App, Backbone, Marionette) {
   'use strict';
 
-  Entities.Page = Backbone.Model.extend({
-    idAttribute: 'ID',
-    urlRoot: 'http://ae.filos.unam.mx/wp-json/posts?type=content&_jsonp=?'
-  });
-  Entities.Pages = Backbone.Collection.extend({
-    url: 'http://ae.filos.unam.mx/wp-json/posts?type=content&_jsonp=?',
-    model: Entities.Page,
-    initialize: function () {
-      this.fetch({ dataType: 'jsonp' });
-    }
-  });
-  App.reqres.setHandler('page:entity', function (id, collection) { // very ugly, should refactor
-    return collection.get(id);
-  });
-  App.reqres.setHandler('page:entities', function () {
-    return new Entities.Pages();
-  });
-});
-
-// modules/pages/controller.js
-this.App.module('Pages', function (Pages, App, Backbone, Marionette) {
-  'use strict';
-
-  Pages.Controller = Marionette.Controller.extend({
+  Contents.Controller = Marionette.Controller.extend({
     initialize: function () {
-      this.collection = App.request('page:entities');
+      App.request('content:entities');
     },
-    show: function (page) { // very ugly, should refactor
-      var self = this;
-      App.execute('when:fetched', this.collection, function () {
-        page = App.request('page:entity', page, self.collection);
-        App.request('default:region').show(new Pages.Views.Show({
-          model: page
+    showPages: function (item) {
+      this._show(item, App.module('Pages').Views.Show);
+    },
+    showLemas: function (item) {
+      this._show(item, App.module('Lemas').Views.Show);
+    },
+    _show: function (item, ShowView) {
+      var model = App.request('content:entity', item);
+      model.on('sync', function () {
+        App.request('default:region').show(new ShowView({ 
+          model: model
         }));
       });
     }
+  });
+});
+
+// modules/contents/entities.js
+this.App.module('Entities', function (Entities, App, Backbone) {
+  'use strict';
+
+  Entities.Content = Backbone.Model.extend({
+    urlRoot: 'http://ae.filos.unam.mx/wp-json/posts',
+    url: function () {
+      return this.urlRoot + '/' + this.attributes.id + '?_jsonp=?';
+    },
+    initialize: function () {
+      App.execute('spinner', this);
+      this.fetch();
+    }
+  });
+  Entities.Contents = Backbone.Collection.extend({
+    model: Entities.Content
+  });
+  App.reqres.setHandler('content:entity', function (item) {
+    return new Entities.Content({ id: item });
+  });
+  App.reqres.setHandler('content:entities', function () {
+    return new Entities.Contents();
   });
 });
 
@@ -217,5 +267,15 @@ this.App.module('Pages', function (Pages, App, Backbone, Marionette) {
   Pages.Views = {};
   Pages.Views.Show = Marionette.ItemView.extend({
     template: 'pages/item'
+  });
+});
+
+// modules/lemas/views.js
+this.App.module('Lemas', function (Lemas, App, Backbone, Marionette) {
+  'use strict';
+
+  Lemas.Views = {};
+  Lemas.Views.Show = Marionette.ItemView.extend({
+    template: 'lemas/item'
   });
 });
