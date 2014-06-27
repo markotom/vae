@@ -1,5 +1,7 @@
 // /config/backbone/sync.js
 (function(Backbone) {
+  'use strict';
+
   var methods,
       _sync = Backbone.sync;
 
@@ -10,17 +12,17 @@
     });
 
     var sync = _sync(method, entity, options);
-    if (!entity._fetch && method === "read") {
+    if (!entity._fetch && method === 'read') {
       return sync;
     }
   };
 
-  var methods = {
+  methods = {
     beforeSend: function() {
-      return this.trigger("sync:start", this);
+      return this.trigger('sync:start', this);
     },
     complete: function() {
-      return this.trigger("sync:stop", this);
+      return this.trigger('sync:stop', this);
     }
   };
 
