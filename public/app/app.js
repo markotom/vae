@@ -72,6 +72,19 @@ this.App.module('Utilities', function(Utilities, App, Backbone, Marionette, $, _
   });
 });
 
+// lib/utilities/spinner.js
+this.App.module('Utilities', function (Utilities, App, Backbone, Marionette) {
+  'use strict';
+
+  App.commands.setHandler('spinner', function (entity) {
+    entity.on('sync:start', function () {
+      App.request('default:region').show(new Marionette.ItemView({
+        template: 'utilities/spinner'
+      }));
+    });
+  });
+});
+
 // modules/header/header.js
 this.App.module('Header', function (Header, App) {
   'use strict';
