@@ -45,24 +45,12 @@ describe('Wordpress JSON API', function () {
       });
   });
 
-  it('should have "lema" post type', function () {
-    post_types.should.have.property('lema');
+  it('should have "content" post type', function () {
+    post_types.should.have.property('content');
   });
 
-  it('should have "emblema" post type', function () {
-    post_types.should.have.property('emblema');
-  });
-
-  it('should have "estudio" post type', function () {
-    post_types.should.have.property('estudio');
-  });
-
-  it('should have "pregunta" post type', function () {
-    post_types.should.have.property('pregunta');
-  });
-
-  it('should have "ensayo" post type', function () {
-    post_types.should.have.property('ensayo');
+  it('should have "types" taxonomy', function () {
+    post_types.content.taxonomies.should.have.deep.property('[0].slug', 'types');
   });
 
 });
