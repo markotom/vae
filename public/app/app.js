@@ -37,6 +37,7 @@ this.App = function (JST, Backbone, Marionette) {
     templates: JST
   });
   App.addRegions({
+    statusRegion: '#status',
     headerRegion: '#header',
     contentRegion: '#content',
     footerRegion: '#footer'
@@ -46,6 +47,9 @@ this.App = function (JST, Backbone, Marionette) {
   });
   App.reqres.setHandler('default:region', function () {
     return App.contentRegion;
+  });
+  App.reqres.setHandler('status:region', function () {
+    return App.statusRegion;
   });
   return App;
 }(JST, Backbone, Marionette);
@@ -78,11 +82,14 @@ this.App.module('Utilities', function(Utilities, App, Backbone, Marionette, $, _
 this.App.module('Utilities', function (Utilities, App, Backbone, Marionette) {
   'use strict';
 
-  App.commands.setHandler('spinner', function (entity) {
+  App.commands.setHandler('status', function (entity) {
     entity.on('sync:start', function () {
-      App.request('default:region').show(new Marionette.ItemView({
-        template: 'utilities/spinner'
+      App.request('status:region').show(new Marionette.ItemView({
+        template: 'utilities/status'
       }));
+    });
+    entity.on('sync:stop', function () {
+      App.request('status:region').empty();
     });
   });
 });
@@ -222,7 +229,7 @@ this.App.module('Entities', function (Entities, App, Backbone) {
       return this.urlRoot + '/' + this.attributes.id + '?_jsonp=?';
     },
     initialize: function () {
-      App.execute('spinner', this);
+      App.execute('status', this);
       this.fetch();
     }
   });
