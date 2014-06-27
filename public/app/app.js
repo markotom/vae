@@ -252,6 +252,7 @@ this.App.module('Entities', function (Entities, App, Backbone) {
     }
   });
   Entities.Contents = Backbone.Collection.extend({
+    url: 'http://ae.filos.unam.mx/wp-json/posts',
     model: Entities.Content
   });
   App.reqres.setHandler('content:entity', function (item) {
