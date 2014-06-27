@@ -206,7 +206,7 @@ this.App.module('Contents', function (Contents, App, Backbone, Marionette) {
 
   Contents.Controller = Marionette.Controller.extend({
     initialize: function () {
-      App.request('content:entities');
+      this.collection = App.request('content:entities');
     },
     _show: function (item, ShowView) {
       var model = App.request('content:entity', item);
@@ -215,6 +215,9 @@ this.App.module('Contents', function (Contents, App, Backbone, Marionette) {
           model: model
         }));
       });
+
+      App.execute('status', model);
+      model.fetch();
     }
   });
 });
@@ -223,25 +226,49 @@ this.App.module('Contents', function (Contents, App, Backbone, Marionette) {
 this.App.module('Entities', function (Entities, App, Backbone) {
   'use strict';
 
+  var _models = [];
+
   Entities.Content = Backbone.Model.extend({
     urlRoot: 'http://ae.filos.unam.mx/wp-json/posts',
     url: function () {
       return this.urlRoot + '/' + this.attributes.id + '?_jsonp=?';
-    },
-    initialize: function () {
-      App.execute('status', this);
-      this.fetch();
     }
   });
   Entities.Contents = Backbone.Collection.extend({
-    url: 'http://ae.filos.unam.mx/wp-json/posts?_jsonp=?',
-    model: Entities.Content
+    url: function () {
+      var url = 'http://ae.filos.unam.mx/wp-json/posts',
+          qs = '?type=content&page=' + this.page + '&_jsonp=?';
+
+      return url + qs;
+    },
+    model: Entities.Content,
+    initialize: function (options) {
+      this.page = options.page || 1;
+    },
+    fetch: function (options) {
+      _models = this.page > 1 ? _models : [];
+      Backbone.Collection.prototype.fetch.call(this, options);
+    },
+    parse: function (models) {
+      this._collection = App.request('content:entities', this.page + 1);
+
+      if (models.length > 0) {
+        _models.push(models);
+        this._collection.fetch();
+      } else {
+        App.vent.trigger('when:fetchedAll', _.flatten(_models));
+      }
+
+      return models;
+    }
   });
   App.reqres.setHandler('content:entity', function (item) {
     return new Entities.Content({ id: item });
   });
-  App.reqres.setHandler('content:entities', function () {
-    return new Entities.Contents();
+  App.reqres.setHandler('content:entities', function (page) {
+    return new Entities.Contents({
+      page: page
+    });
   });
 });
 
@@ -252,6 +279,7 @@ this.App.module('Lemas', function (Lemas, App, Backbone, Marionette) {
   // router
   Lemas.Router = Marionette.AppRouter.extend({
     appRoutes: {
+      'lemas/azar': 'azar',
       'lemas/:id': 'show'
     }
   });
@@ -264,10 +292,22 @@ this.App.module('Lemas', function (Lemas, App, Backbone, Marionette) {
 });
 
 // modules/lemas/controller.js
-this.App.module('Lemas', function (Lemas, App, Backbone, Marionette) {
+this.App.module('Lemas', function (Lemas, App, Backbone) {
   'use strict';
 
   Lemas.Controller = App.module('Contents').Controller.extend({
+    azar: function () {
+      App.vent.once('when:fetchedAll', function (models) {
+        models = _.filter(models, function (model) {
+          return model.terms.types[0].slug === 'lemas';
+        });
+
+        Backbone.history.navigate(
+          '#/lemas/' + models[_.random(0, models.length - 1)].ID);
+      });
+      App.execute('status', this.collection);
+      this.collection.fetch();
+    },
     show: function (item) {
       this._show(item, Lemas.Views.Show);
     }
@@ -303,7 +343,7 @@ this.App.module('Pages', function (Pages, App, Backbone, Marionette) {
 });
 
 // modules/pages/controller.js
-this.App.module('Pages', function (Pages, App, Backbone, Marionette) {
+this.App.module('Pages', function (Pages, App) {
   'use strict';
 
   Pages.Controller = App.module('Contents').Controller.extend({
