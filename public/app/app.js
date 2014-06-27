@@ -1,3 +1,32 @@
+// /config/backbone/sync.js
+(function(Backbone) {
+  var methods,
+      _sync = Backbone.sync;
+
+  Backbone.sync = function(method, entity, options) {
+    _.defaults(options || {}, {
+      beforeSend: _.bind(methods.beforeSend, entity),
+      complete: _.bind(methods.complete, entity)
+    });
+
+    var sync = _sync(method, entity, options);
+    if (!entity._fetch && method === "read") {
+      return sync;
+    }
+  };
+
+  var methods = {
+    beforeSend: function() {
+      return this.trigger("sync:start", this);
+    },
+    complete: function() {
+      return this.trigger("sync:stop", this);
+    }
+  };
+
+  return methods;
+})(Backbone);
+
 // app.js
 this.App = function (JST, Backbone, Marionette) {
   'use strict';
