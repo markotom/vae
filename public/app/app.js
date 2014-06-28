@@ -78,7 +78,7 @@ this.App.module('Utilities', function(Utilities, App, Backbone, Marionette, $, _
   });
 });
 
-// lib/utilities/spinner.js
+// lib/utilities/status.js
 this.App.module('Utilities', function (Utilities, App, Backbone, Marionette) {
   'use strict';
 
@@ -243,6 +243,7 @@ this.App.module('Entities', function (Entities, App, Backbone) {
     },
     model: Entities.Content,
     initialize: function (options) {
+      options = options || {};
       this.page = options.page || 1;
     },
     fetch: function (options) {
@@ -266,9 +267,14 @@ this.App.module('Entities', function (Entities, App, Backbone) {
     return new Entities.Content({ id: item });
   });
   App.reqres.setHandler('content:entities', function (page) {
-    return new Entities.Contents({
-      page: page
-    });
+    if (page) {
+      return new Entities.Contents({ page: page });
+    }
+
+    App.collections = App.collections || {};
+    App.collections.contents = App.collections.contents || new Entities.Contents();
+
+    return App.collections.contents;
   });
 });
 
