@@ -217,7 +217,7 @@ this.App.module('Contents', function (Contents, App, Backbone, Marionette) {
       });
 
       App.execute('status', model);
-      model.fetch();
+      model.fetch({ cache: true });
     }
   });
 });
@@ -254,7 +254,7 @@ this.App.module('Entities', function (Entities, App, Backbone) {
 
       if (models.length > 0) {
         _models.push(models);
-        this._collection.fetch();
+        this._collection.fetch({ cache: true });
       } else {
         App.vent.trigger('when:fetchedAll', _.flatten(_models));
       }
@@ -306,7 +306,7 @@ this.App.module('Lemas', function (Lemas, App, Backbone) {
           '#/lemas/' + models[_.random(0, models.length - 1)].ID);
       });
       App.execute('status', this.collection);
-      this.collection.fetch();
+      this.collection.fetch({ cache: true });
     },
     show: function (item) {
       this._show(item, Lemas.Views.Show);
