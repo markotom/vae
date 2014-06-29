@@ -58,6 +58,25 @@ module.exports = function (grunt) {
       }
     },
 
+    uglify: {
+      production: {
+        options: {
+          sourceMap: false,
+          sourceMapName: 'public/built/js/sourcemap.map'
+        },
+        files: {
+          'public/built/js/app.min.js': [
+            'public/config/**/*.js',
+            'public/built/js/jst.js',
+            'public/app/app.js',
+            'public/app/lib/**/*.js',
+            'public/app/entities/**/*.js',
+            'public/app/modules/**/*.js'
+          ]
+        }
+      }
+    },
+
     watch: {
       configFiles: {
         files: ['Gruntfile.js'],
@@ -132,6 +151,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-preprocess');
   grunt.loadNpmTasks('grunt-contrib-jst');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
   grunt.registerTask('build', ['less:production']);
 
