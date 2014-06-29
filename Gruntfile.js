@@ -61,8 +61,8 @@ module.exports = function (grunt) {
     uglify: {
       production: {
         options: {
-          sourceMap: false,
-          sourceMapName: 'public/built/js/sourcemap.map'
+          sourceMap: true,
+          sourceMapName: 'public/built/js/app.min.map'
         },
         files: {
           'public/built/js/app.min.js': [
