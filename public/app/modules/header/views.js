@@ -9,15 +9,14 @@ this.App.module('Header', function (Header, App, Backbone, Marionette) {
     },
     initialize: function () {
       this.collection = App.request('content:entities');
-      this.collection.fetch({ cache: true });
-    },
-    onShow: function () {
-      var search = this.search;
-      this.collection.on('sync', function (collection, models) {
-        search.show(new Header.Views.Search({
+      
+      this.listenTo(this.collection, 'sync', function (collection, models) {
+        this.search.show(new Header.Views.Search({
           models: models
         }));
       });
+
+      this.collection.fetch({ cache: true });
     }
   });
   Header.Views.Search = Marionette.ItemView.extend({
