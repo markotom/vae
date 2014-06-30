@@ -94,6 +94,13 @@ module.exports = function (grunt) {
           livereload: true
         }
       },
+      uglify: {
+        files: [
+          'public/app/**/*',
+          'public/built/js/jst.js'
+        ],
+        tasks: ['uglify']
+      },
       jshint: {
         files: [
           '**/*.js',
