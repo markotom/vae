@@ -86,7 +86,8 @@ module.exports = function (grunt) {
       },
       livereload: {
         files: [
-          'public/**/*',
+          'public/built/**/*',
+          'public/index.ejs',
           'server/**/*'
         ],
         options: {
