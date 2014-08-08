@@ -4,6 +4,7 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
 
+    // Less task
     less: {
       options: {
         paths: ['public']
@@ -23,6 +24,7 @@ module.exports = function (grunt) {
       }
     },
 
+    // Preprocess task
     preprocess : {
       development: {
         src: 'public/_index.ejs',
@@ -44,6 +46,7 @@ module.exports = function (grunt) {
       }
     },
 
+    // Jst task
     jst: {
       compile: {
         options: {
@@ -58,6 +61,7 @@ module.exports = function (grunt) {
       }
     },
 
+    // Uglify task
     uglify: {
       production: {
         options: {
@@ -77,6 +81,7 @@ module.exports = function (grunt) {
       }
     },
 
+    // Watch task
     watch: {
       configFiles: {
         files: ['Gruntfile.js'],
@@ -84,22 +89,16 @@ module.exports = function (grunt) {
           reload: true
         }
       },
-      livereload: {
-        files: [
-          'public/built/**/*',
-          'public/index.ejs',
-          'server/**/*'
-        ],
-        options: {
-          livereload: true
-        }
-      },
       uglify: {
         files: [
           'public/app/**/*',
           'public/built/js/jst.js'
         ],
-        tasks: ['uglify']
+        tasks: ['uglify'],
+        options: {
+          spawn: false,
+          livereload: true
+        }
       },
       jshint: {
         files: [
@@ -118,12 +117,17 @@ module.exports = function (grunt) {
         files: ['public/styles/**/*.less'],
         tasks: ['less:development'],
         options: {
-          spawn: true
+          spawn: false,
+          livereload: true
         }
       },
       preprocess: {
         files: ['public/_index.ejs'],
-        tasks: ['preprocess:development']
+        tasks: ['preprocess:development'],
+        options: {
+          spawn: false,
+          livereload: true
+        }
       },
       jst: {
         files: ['public/app/templates/**/*.html'],
@@ -131,6 +135,7 @@ module.exports = function (grunt) {
       }
     },
 
+    // Jshint task
     jshint: {
       options: {
         jshintrc: '.jshintrc'
@@ -143,6 +148,7 @@ module.exports = function (grunt) {
       ]
     },
 
+    // Mocha task
     mochaTest: {
       options: {
         reporter: 'spec',
