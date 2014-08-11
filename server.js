@@ -4,10 +4,10 @@ var config = require('./server/config'),
     express = require('express'),
     server = module.exports = express(),
     WP = require('wordpress-rest-api'),
-    lodash = require('lodash');
+    _ = require('lodash');
 
 // Wordpress Rest API (client)
-// Be careful if use auth on production
+// Not use with auth on production
 var wp = new WP({ endpoint: 'http://ae.filos.unam.mx/wp-json' });
 
 // Middlewares
@@ -40,7 +40,7 @@ var getDataFromWordpress = function () {
         console.log('Found ' + data.length + ' contents');
 
         // Group by types (is there a faster module than Lodash?)
-        data = lodash.groupBy(data, function (content) {
+        data = _.groupBy(data, function (content) {
           var slug,
               types = content.terms.types;
 
@@ -86,20 +86,22 @@ server.get('/api/1.0/types', function (req, res) {
   res.json(server.get('contents'));
 });
 
+// Contents (by id)
+server.get('/api/1.0/types/:type/:id', function (req, res) {
+  var contents = server.get('contents'),
+      content = _.where(contents[req.params.type], {
+        'ID': parseInt(req.params.id, 10)
+      });
+
+  res.json(content[0]);
+});
+
 // Contents (by type)
 ['contributions', 'emblems', 'essays', 'studies', 'lemmas', 'pages'].forEach(function (slug) {
   server.get('/api/1.0/types/' + slug, function (req, res) {
     var contents = server.get('contents');
     res.json(contents[slug]);
   });
-});
-
-// Contents (by id)
-server.get('/api/1.0/types/:type/:id', function (req, res) {
-  var contents = server.get('contents'),
-      content = lodash.where(contents.lemas, { 'ID': 445 });
-
-  res.json(content[0]);
 });
 
 

@@ -15,8 +15,7 @@
     "JST",
     "xit",
     "it",
-    "$",
-    "_"
+    "$"
   ],
 
   "globalstrict" : true,

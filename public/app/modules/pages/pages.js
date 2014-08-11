@@ -1,16 +1,12 @@
 this.App.module('Pages', function (Pages, App, Backbone, Marionette) {
-  'use strict';
 
-  // router
-  Pages.Router = Marionette.AppRouter.extend({
-    appRoutes: {
-      'pages/:id': 'show'
-    }
-  });
-  // initializer
+  // Initializer
   App.addInitializer(function () {
+    // Set router instance
     new Pages.Router({
+      // Set controller instance
       controller: new Pages.Controller()
     });
   });
+
 });

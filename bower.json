@@ -11,6 +11,6 @@
   "dependencies": {
     "bootstrap": "~3.1.1",
     "marionette": "~2.0.1",
-    "backbone-fetch-cache": "~1.4.0"
+    "chosen": "~1.1.0"
   }
 }

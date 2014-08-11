@@ -63,11 +63,24 @@ module.exports = function (grunt) {
 
     // Uglify task
     uglify: {
-      production: {
+      development: {
         options: {
+          beautify: true,
           sourceMap: true,
-          sourceMapName: 'public/built/js/app.min.map'
+          sourceMapName: 'public/built/js/app.min.map',
         },
+        files: {
+          'public/built/js/app.min.js': [
+            'public/config/**/*.js',
+            'public/built/js/jst.js',
+            'public/app/app.js',
+            'public/app/lib/**/*.js',
+            'public/app/entities/**/*.js',
+            'public/app/modules/**/*.js'
+          ]
+        }
+      },
+      production: {
         files: {
           'public/built/js/app.min.js': [
             'public/config/**/*.js',
@@ -94,7 +107,7 @@ module.exports = function (grunt) {
           'public/app/**/*',
           'public/built/js/jst.js'
         ],
-        tasks: ['uglify'],
+        tasks: ['uglify:development'],
         options: {
           spawn: false,
           livereload: true

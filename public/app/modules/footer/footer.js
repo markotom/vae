@@ -1,9 +1,9 @@
 this.App.module('Footer', function (Footer, App) {
   'use strict';
 
+  // Initialize module
   Footer.addInitializer(function () {
-    new Footer.Controller({
-      region: App.footerRegion
-    });
+    // Set controller instance
+    new Footer.Controller({ region: App.footerRegion });
   });
 });

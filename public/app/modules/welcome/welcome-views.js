@@ -1,8 +1,11 @@
 this.App.module('Welcome', function (Welcome, App, Backbone, Marionette) {
   'use strict';
 
+  // Welcome Views
   Welcome.Views = {};
-  Welcome.Views.Layout = Marionette.LayoutView.extend({
+
+  // Welcome Main View
+  Welcome.Views.Main = Marionette.LayoutView.extend({
     template: 'welcome'
   });
 });

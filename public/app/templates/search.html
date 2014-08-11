@@ -1,31 +1,53 @@
-<% console.log(models); %>
-<select data-placeholder="Buscar" class="chosen-select">
-  <option value=""></option>
-  <optgroup label="Lemas">
-    <option>Acontecimiento</option>
-    <option>Alteridad</option>
-    <option>Apropiación</option>
-    <option>Archivo</option>
-    <option>Crítica</option>
-    <option>Debate</option>
-    <option>Exclusión/Inclusión</option>
-    <option>Experiencia</option>
-    <option>Feminismos estratégicos</option>
-    <option>Política</option>
-    <option>Usos públicos y privados del discurso</option>
-    <option>Violencia</option>
-  </optgroup>
-  <optgroup label="Emblemas">
-    <option>Solidaridad</option>
-    <option>Vocabulario</option>
-  </optgroup>
-  <optgroup label="Preguntas">
-    <option>¿Qué es una víctima?</option>
-    <option>¿Qué relación hay entre violencia y acontecimiento?</option>
-  </optgroup>
-  <optgroup label="Ensayos">
-    <option>Algo propio, algo diferente de sí. Ensayos sobre Dante, Baltasar Gracián y la astucia del lenguaje</option>
-    <option>Interpretar en filosofía. Un estudio contemporáneo</option>
-    <option>El presente cautivo. Siete variaciones sobre la experiencia moderna</option>
-  </optgroup>
-</select>
+<div style="width: 300px; margin-top: 5px; display: none">
+  <select data-placeholder="Buscar" class="chosen-select">
+    <option value=""></option>
+
+    <% if (models.contributions) { %>
+    <optgroup label="Contribuciones al debate">
+    <% _.each(models.contributions, function (content) { %>
+      <option><%- content.title %></option>
+    <% }); %>
+    </optgroup>
+    <% } %>
+
+    <% if (models.lemmas) { %>
+    <optgroup label="Lemas">
+    <% _.each(models.lemmas, function (content) { %>
+      <option><%- content.title %></option>
+    <% }); %>
+    </optgroup>
+    <% } %>
+
+    <% if (models.emblems) { %>
+    <optgroup label="Emblemas">
+    <% _.each(models.emblems, function (content) { %>
+      <option><%- content.title %></option>
+    <% }); %>
+    </optgroup>
+    <% } %>
+
+    <% if (models.studies) { %>
+    <optgroup label="Estudios de vocabulario">
+    <% _.each(models.studies, function (content) { %>
+      <option><%- content.title %></option>
+    <% }); %>
+    </optgroup>
+    <% } %>
+
+    <% if (models.questions) { %>
+    <optgroup label="Preguntas">
+    <% _.each(models.questions, function (content) { %>
+      <option><%- content.title %></option>
+    <% }); %>
+    </optgroup>
+    <% } %>
+
+    <% if (models.essays) { %>
+    <optgroup label="Ensayos">
+    <% _.each(models.essays, function (content) { %>
+      <option><%- content.title %></option>
+    <% }); %>
+    </optgroup>
+    <% } %>
+  </select>
+</div>
