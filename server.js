@@ -61,6 +61,28 @@ var getDataFromWordpress = function () {
           }
         });
 
+        // Generate relations between contents
+        for(var type in data) {
+          if (type !== 'pages') {
+            _(data[type]).forEach(function (d, i) {
+              var content = d.content;
+
+              _(data[type]).forEach(function (t) {
+                var pattern = new RegExp(t.title, 'gi');
+                content = content.replace(pattern, function(word) {
+                  if (t.terms.types && t.terms.types[0]) {
+                    return '<a href="#/' + type + '/' + t.ID + '">'+ word +'</a>';
+                  }
+
+                  return word;
+                });
+              });
+
+              data[type][i].content = content;
+            });
+          }
+        };
+
         // Set content by types
         server.set('contents', data);
       }
