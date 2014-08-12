@@ -1,11 +1,11 @@
-<div style="width: 300px; margin-top: 5px; display: none">
+<div style="width: 400px; margin-top: 5px">
   <select data-placeholder="Buscar" class="chosen-select">
     <option value=""></option>
 
     <% if (models.contributions) { %>
     <optgroup label="Contribuciones al debate">
     <% _.each(models.contributions, function (content) { %>
-      <option><%- content.title %></option>
+      <option value="#/contributions/<%- content.ID %>"><%- content.title %></option>
     <% }); %>
     </optgroup>
     <% } %>
@@ -13,7 +13,7 @@
     <% if (models.lemmas) { %>
     <optgroup label="Lemas">
     <% _.each(models.lemmas, function (content) { %>
-      <option><%- content.title %></option>
+      <option value="#/lemmas/<%- content.ID %>"><%- content.title %></option>
     <% }); %>
     </optgroup>
     <% } %>
@@ -21,7 +21,7 @@
     <% if (models.emblems) { %>
     <optgroup label="Emblemas">
     <% _.each(models.emblems, function (content) { %>
-      <option><%- content.title %></option>
+      <option value="#/emblems/<%- content.ID %>"><%- content.title %></option>
     <% }); %>
     </optgroup>
     <% } %>
@@ -29,7 +29,7 @@
     <% if (models.studies) { %>
     <optgroup label="Estudios de vocabulario">
     <% _.each(models.studies, function (content) { %>
-      <option><%- content.title %></option>
+      <option value="#/studies/<%- content.ID %>"><%- content.title %></option>
     <% }); %>
     </optgroup>
     <% } %>
@@ -37,7 +37,7 @@
     <% if (models.questions) { %>
     <optgroup label="Preguntas">
     <% _.each(models.questions, function (content) { %>
-      <option><%- content.title %></option>
+      <option value="#/questions/<%- content.ID %>"><%- content.title %></option>
     <% }); %>
     </optgroup>
     <% } %>
@@ -45,7 +45,7 @@
     <% if (models.essays) { %>
     <optgroup label="Ensayos">
     <% _.each(models.essays, function (content) { %>
-      <option><%- content.title %></option>
+      <option value="#/essays/<%- content.ID %>"><%- content.title %></option>
     <% }); %>
     </optgroup>
     <% } %>

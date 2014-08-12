@@ -28,6 +28,15 @@ this.App.module('Header', function (Header, App, Backbone, Marionette) {
     template: 'search',
     serializeData: function () {
       return this.options;
+    },
+    onShow: function () {
+      $('.chosen-select').chosen({
+        no_results_text: 'No se encontró ningún resultado con'
+      });
+
+      $('.chosen-select').change(function () {
+        Backbone.history.navigate($(this).val());
+      });
     }
   });
 });
