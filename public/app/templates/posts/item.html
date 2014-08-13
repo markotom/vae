@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="page-header">
+    <h1 class="h2 title text-muted">
+      <%= title %> <div class="label label-default" style="font-weight: normal"><%= terms.types[0].name %></div>
+    </h1>
+  </div>
+
+  <div class="row">
+    <div class="col-md-7">
+      <div class="content"><%= content %></div>
+    </div>
+
+    <div class="col-md-5">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#cloud" data-toggle="tab">Palabras</a></li>
+        <li><a href="#cloud" data-toggle="tab">Preguntas</a></li>
+      </ul>
+
+      <div style="padding: 20px; border: 1px solid #ddd; border-top: 0;" class="tab-content">
+        <div id="cloud" class="tab-pane active"></div>
+      </div>
+  </div>
+</div>

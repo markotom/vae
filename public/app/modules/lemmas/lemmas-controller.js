@@ -3,42 +3,23 @@ this.App.module('Lemmas', function (Lemmas, App, Backbone, Marionette) {
   // Router
   Lemmas.Router = Marionette.AppRouter.extend({
     appRoutes: {
-      'lemmas/random': 'showRandomLemma',
-      'lemmas/:id': 'showLemma'
+      'lemmas/random': 'showRandomPost',
+      'lemmas/:id': 'showPost'
     }
   });
 
   // Controller
-  Lemmas.Controller = App.Controllers.Application.extend({
+  Lemmas.Controller = App.Controllers.Post.extend({
     initialize: function () {
-      this.collection = App.request('lemmas:entities');
+      this.prefix = 'lemmas';
+      this.entity = 'lemma:entity';
+      this.entities = 'lemmas:entities';
     },
-    showLemma: function (item) {
-      // Get model
-      var model = App.request('lemma:entity', { id: item });
-
-      // Show view when sync is done
-      model.on('sync', function () {
-        this.show(new Lemmas.Views.Show({ model: model }));
-      }, this);
-
-      // Show loading message
-      App.execute('loading', model);
-
-      // Fetch model
-      model.fetch();
+    showPost: function (item) {
+      this._showPost(item, Lemmas.Views.Show);
     },
-    showRandomLemma: function () {
-      // Show view when sync is done
-      this.collection.once('sync', function (collection, models) {
-        var model = models[Math.floor(Math.random() * models.length)];
-        Backbone.history.navigate('#/lemmas/' + model.ID);
-      }, this);
-
-      // Show loading message
-      App.execute('loading', this.collection);
-
-      this.collection.fetch();
+    showRandomPost: function () {
+      this._showRandomPost();
     }
   });
 

@@ -5,8 +5,6 @@ this.App.module('Lemmas', function (Lemmas, App, Backbone, Marionette) {
   Lemmas.Views = {};
 
   // Lemmas Show View
-  Lemmas.Views.Show = Marionette.ItemView.extend({
-    template: 'lemmas/item'
-  });
+  Lemmas.Views.Show = App.Views.Post.Show.extend();
 
 });

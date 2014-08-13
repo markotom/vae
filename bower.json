@@ -11,6 +11,8 @@
   "dependencies": {
     "bootstrap": "~3.1.1",
     "marionette": "~2.0.1",
-    "chosen": "~1.1.0"
+    "chosen": "~1.1.0",
+    "d3": "~3.4.11",
+    "d3-cloud": "~1.0.5"
   }
 }

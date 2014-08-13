@@ -4,6 +4,7 @@ var config = require('./server/config'),
     express = require('express'),
     server = module.exports = express(),
     WP = require('wordpress-rest-api'),
+    keyword_extractor = require('keyword-extractor'),
     _ = require('lodash');
 
 // Wordpress Rest API (client)
@@ -36,8 +37,18 @@ var getDataFromWordpress = function () {
     .filter('posts_per_page', -1)
     .get(function (err, data) {
       if (!err) {
-
         console.log('Found ' + data.length + ' contents');
+
+        // Get words
+        _(data).forEach(function (d) {
+          var words = keyword_extractor.extract(d.content, {
+            language: 'spanish',
+            return_changed_case: true
+          });
+
+          d.words = _.chain(words).countBy().value();
+
+        });
 
         // Group by types (is there a faster module than Lodash?)
         data = _.groupBy(data, function (content) {
