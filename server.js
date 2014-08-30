@@ -5,6 +5,7 @@ var config = require('./server/config'),
     server = module.exports = express(),
     WP = require('wordpress-rest-api'),
     keyword_extractor = require('keyword-extractor'),
+    wuzzy = require('wuzzy'),
     _ = require('lodash');
 
 // Wordpress Rest API (client)
@@ -39,63 +40,67 @@ var getDataFromWordpress = function () {
       if (!err) {
         console.log('Found ' + data.length + ' contents');
 
-        // Get words
-        _(data).forEach(function (d) {
+        // Get words for each content
+        data.forEach(function (d) {
+        	// Using stop words (spanish)
+        	// http://en.wikipedia.org/wiki/Stop_words
           var words = keyword_extractor.extract(d.content, {
             language: 'spanish',
             return_changed_case: true
           });
 
           d.words = _.chain(words).countBy().value();
-
         });
+
+        // Get needles to search in a haystack
+        var needles = _.map(data, function (c) {
+        	var needle = { ID: c.ID, title: c.title };
+
+        	if (c.terms.types && c.terms.types[0]) {
+        		needle.type = c.terms.types[0].slug;
+        	}
+
+					return needle;
+				});
+
+        // Generate relations between contents
+        // http://en.wikipedia.org/wiki/Approximate_string_matching
+				needles.forEach(function (needle) {
+					// Search needle in each content
+					data.forEach(function (object, index) {
+						// Compare distance for each word
+						_.keys(object.words).forEach(function (word) {
+							// Using Jaro-Winkler algorithm to measure the distance
+							// http://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance
+							var distance = wuzzy.jarowinkler(needle.title, word);
+
+							// Replace if distance is more than 0.7
+							if (distance > 0.7) {
+								// Search if word has no link yet
+								var pattern = new RegExp('(?!<.*?)\\b(' + word + ')\\b(?![^<>]*?(</a>|>))', 'gi');
+
+								// Replace content with pattern
+								data[index].content = object.content.replace(pattern, function (word) {
+									return '<a href="#/'+ needle.type +'/' + needle.ID + '">'+ word +'</a>';
+								});
+							}
+						});
+					});
+				});
 
         // Group by types (is there a faster module than Lodash?)
         data = _.groupBy(data, function (content) {
-          var slug,
-              types = content.terms.types;
+          var types = content.terms.types;
 
           if (types && types[0]) {
-
-            switch (types[0].slug) {
-              case 'contribuciones-al-debate': slug = 'contributions'; break;
-              case 'emblemas': slug = 'emblems'; break;
-              case 'ensayos': slug = 'essays'; break;
-              case 'estudios-de-vocabulario': slug = 'studies'; break;
-              case 'lemas': slug = 'lemmas'; break;
-              case 'paginas': slug = 'pages'; break;
-
-              default: slug = types[0].slug;
-            }
-
-            return slug;
+          	return types[0].slug;
           }
         });
 
-        // Generate relations between contents
-        for(var type in data) {
-          if (type !== 'pages') {
-            _(data[type]).forEach(function (d, i) {
-              var content = d.content;
-
-              _(data[type]).forEach(function (t) {
-                var pattern = new RegExp(t.title, 'gi');
-                content = content.replace(pattern, function(word) {
-                  if (t.terms.types && t.terms.types[0]) {
-                    return '<a href="#/' + type + '/' + t.ID + '">'+ word +'</a>';
-                  }
-
-                  return word;
-                });
-              });
-
-              data[type][i].content = content;
-            });
-          }
-        };
-
         // Set content by types
         server.set('contents', data);
+
+        console.log('The content has been processed!');
       }
     });
 };
