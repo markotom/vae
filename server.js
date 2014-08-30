@@ -74,8 +74,8 @@ var getDataFromWordpress = function () {
               // http://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance
               var distance = wuzzy.jarowinkler(needle.title, word);
 
-              // Replace if distance is more than 0.7
-              if (distance > 0.7) {
+              // Replace if distance is more than 0.8
+              if (distance > 0.8) {
                 // Search if word has no link yet
                 var pattern = new RegExp('(?!<.*?)\\b(' + word + ')\\b(?![^<>]*?(</a>|>))', 'gi');
 
