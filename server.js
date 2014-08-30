@@ -42,8 +42,8 @@ var getDataFromWordpress = function () {
 
         // Get words for each content
         data.forEach(function (d) {
-        	// Using stop words (spanish)
-        	// http://en.wikipedia.org/wiki/Stop_words
+          // Using stop words (spanish)
+          // http://en.wikipedia.org/wiki/Stop_words
           var words = keyword_extractor.extract(d.content, {
             language: 'spanish',
             return_changed_case: true
@@ -54,46 +54,46 @@ var getDataFromWordpress = function () {
 
         // Get needles to search in a haystack
         var needles = _.map(data, function (c) {
-        	var needle = { ID: c.ID, title: c.title };
+          var needle = { ID: c.ID, title: c.title };
 
-        	if (c.terms.types && c.terms.types[0]) {
-        		needle.type = c.terms.types[0].slug;
-        	}
+          if (c.terms.types && c.terms.types[0]) {
+            needle.type = c.terms.types[0].slug;
+          }
 
-					return needle;
-				});
+          return needle;
+        });
 
         // Generate relations between contents
         // http://en.wikipedia.org/wiki/Approximate_string_matching
-				needles.forEach(function (needle) {
-					// Search needle in each content
-					data.forEach(function (object, index) {
-						// Compare distance for each word
-						_.keys(object.words).forEach(function (word) {
-							// Using Jaro-Winkler algorithm to measure the distance
-							// http://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance
-							var distance = wuzzy.jarowinkler(needle.title, word);
+        needles.forEach(function (needle) {
+          // Search needle in each content
+          data.forEach(function (object, index) {
+            // Compare distance for each word
+            _.keys(object.words).forEach(function (word) {
+              // Using Jaro-Winkler algorithm to measure the distance
+              // http://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance
+              var distance = wuzzy.jarowinkler(needle.title, word);
 
-							// Replace if distance is more than 0.7
-							if (distance > 0.7) {
-								// Search if word has no link yet
-								var pattern = new RegExp('(?!<.*?)\\b(' + word + ')\\b(?![^<>]*?(</a>|>))', 'gi');
+              // Replace if distance is more than 0.7
+              if (distance > 0.7) {
+                // Search if word has no link yet
+                var pattern = new RegExp('(?!<.*?)\\b(' + word + ')\\b(?![^<>]*?(</a>|>))', 'gi');
 
-								// Replace content with pattern
-								data[index].content = object.content.replace(pattern, function (word) {
-									return '<a href="#/'+ needle.type +'/' + needle.ID + '">'+ word +'</a>';
-								});
-							}
-						});
-					});
-				});
+                // Replace content with pattern
+                data[index].content = object.content.replace(pattern, function (word) {
+                  return '<a href="#/'+ needle.type +'/' + needle.ID + '">'+ word +'</a>';
+                });
+              }
+            });
+          });
+        });
 
         // Group by types (is there a faster module than Lodash?)
         data = _.groupBy(data, function (content) {
           var types = content.terms.types;
 
           if (types && types[0]) {
-          	return types[0].slug;
+            return types[0].slug;
           }
         });
 
