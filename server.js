@@ -49,7 +49,11 @@ var getDataFromWordpress = function () {
             return_changed_case: false
           });
 
-          d.words = _.chain(words).countBy().value();
+          d.words = _.chain(words).countBy().pairs().map(function (word) {
+            return { text: word[0], size: word[1] }
+          }).sortBy(function (word) {
+            return -word.size;
+          }).value();
         });
 
         // Get needles to search in a haystack
