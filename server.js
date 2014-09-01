@@ -77,7 +77,7 @@ var getDataFromWordpress = function () {
               // Replace if distance is more than 0.8
               if (distance > 0.8) {
                 // Search if word has no link yet
-                var pattern = new RegExp('(?!<.*?)\\b(' + word + ')\\b(?![^<>]*?(</a>|>))', 'gi');
+                var pattern = new RegExp('(?!<a.*?)\\b(' + word + ')\\b(?![^<>]*?(</a>|>))', 'gi');
 
                 // Replace content with pattern
                 data[index].content = object.content.replace(pattern, function (word) {
