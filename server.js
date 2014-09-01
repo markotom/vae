@@ -73,13 +73,13 @@ var getDataFromWordpress = function () {
           // Search needle in each content
           data.forEach(function (object, index) {
             // Compare distance for each word
-            _.keys(object.words).forEach(function (word) {
-              // Using Jaro-Winkler algorithm to measure the distance
-              // http://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance
-              var distance = wuzzy.jarowinkler(needle.title, word);
+            _.pluck(object.words, 'text').forEach(function (word) {
+              // Using n-gram to measure the distance
+              // http://en.wikipedia.org/wiki/N-gram
+              var distance = wuzzy.ngram(needle.title, word);
 
-              // Replace if distance is more than 0.8
-              if (distance > 0.8) {
+              // Replace if distance is more than 0.6
+              if (distance > 0.6) {
                 // Search if word has no link yet
                 var pattern = new RegExp('(?!<a.*?)\\b(' + word + ')\\b(?![^<>]*?(</a>|>))', 'gi');
 
