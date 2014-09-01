@@ -12,7 +12,11 @@ this.App.module('Views', function (Views, App, Backbone, Marionette, $, _) {
     onShow: function () {
       this.cloud.show(new Views.Post.Cloud({
         model: this.model
-      }))
+      }));
+
+      $('body').animate({
+	      scrollTop: $('body').offset().top
+	    }, 500);
     }
   });
 
