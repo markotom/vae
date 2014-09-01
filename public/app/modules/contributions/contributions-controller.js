@@ -1,4 +1,5 @@
 this.App.module('Contributions', function (Contributions, App, Backbone, Marionette) {
+	'use strict';
 
   // Router
   Contributions.Router = Marionette.AppRouter.extend({

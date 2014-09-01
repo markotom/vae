@@ -26,7 +26,7 @@ this.App.module('Utilities', function (Utilities, App, Backbone, Marionette, $, 
 
       var fontSize  = d3.scale.log().domain(domain).range([20, 90]);
       var fillColor = d3.scale.category20c();
-      var opacity = d3.scale.ordinal().domain(domain).range([.3, 1]);
+      var opacity = d3.scale.ordinal().domain(domain).range([0.3, 1]);
 
       d3.layout.cloud()
         .size(options.size)
@@ -49,7 +49,7 @@ this.App.module('Utilities', function (Utilities, App, Backbone, Marionette, $, 
               .style('font-weight', 'bold')
               .style('font-family', options.font)
               .style('fill', function (d) { return fillColor(+d.size); })
-              .style("opacity", function (d) {return opacity(+d.size);})
+              .style('opacity', function (d) {return opacity(+d.size);})
               .attr('text-anchor', 'middle')
               .attr('transform', function (d) {
                 return 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')';

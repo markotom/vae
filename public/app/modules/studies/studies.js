@@ -1,4 +1,5 @@
-this.App.module('Studies', function (Studies, App, Backbone, Marionette) {
+this.App.module('Studies', function (Studies, App) {
+	'use strict';
 
   // Initializer
   App.addInitializer(function () {

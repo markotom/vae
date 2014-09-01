@@ -1,4 +1,5 @@
 this.App.module('Lemmas', function (Lemmas, App, Backbone, Marionette) {
+	'use strict';
 
   // Router
   Lemmas.Router = Marionette.AppRouter.extend({

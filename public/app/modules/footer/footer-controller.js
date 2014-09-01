@@ -1,4 +1,4 @@
-this.App.module('Footer', function (Footer, App, Backbone, Marionette) {
+this.App.module('Footer', function (Footer, App) {
   'use strict';
 
   // Controller

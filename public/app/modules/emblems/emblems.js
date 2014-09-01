@@ -1,4 +1,5 @@
-this.App.module('Emblems', function (Emblems, App, Backbone, Marionette) {
+this.App.module('Emblems', function (Emblems, App) {
+	'use strict';
 
   // Initializer
   App.addInitializer(function () {

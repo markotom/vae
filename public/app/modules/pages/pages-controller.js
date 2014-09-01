@@ -1,4 +1,5 @@
 this.App.module('Pages', function (Pages, App, Backbone, Marionette) {
+	'use strict';
 
   // Router
   Pages.Router = Marionette.AppRouter.extend({

@@ -1,4 +1,5 @@
-this.App.module('Contributions', function (Contributions, App, Backbone, Marionette) {
+this.App.module('Contributions', function (Contributions, App) {
+	'use strict';
 
   // Initializer
   App.addInitializer(function () {

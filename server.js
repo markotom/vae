@@ -50,7 +50,7 @@ var getDataFromWordpress = function () {
           });
 
           d.words = _.chain(words).countBy().pairs().map(function (word) {
-            return { text: word[0], size: word[1] }
+            return { text: word[0], size: word[1] };
           }).sortBy(function (word) {
             return -word.size;
           }).value();

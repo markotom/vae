@@ -1,4 +1,4 @@
-this.App.module('Header', function (Header, App, Backbone, Marionette) {
+this.App.module('Header', function (Header, App) {
   'use strict';
 
   // Controller

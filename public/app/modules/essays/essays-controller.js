@@ -1,4 +1,5 @@
 this.App.module('Essays', function (Essays, App, Backbone, Marionette) {
+	'use strict';
 
   // Router
   Essays.Router = Marionette.AppRouter.extend({

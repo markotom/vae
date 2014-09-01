@@ -49,7 +49,7 @@ this.App.module('Header', function (Header, App, Backbone, Marionette) {
       $('.chosen-select option').prop('selected', false);
 
       if (current) {
-        current.prop('selected', true)​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​;
+        current.prop('selected', true)​​​;
       }
 
       this.select.trigger('chosen:updated');

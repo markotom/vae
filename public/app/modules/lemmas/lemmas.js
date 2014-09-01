@@ -1,4 +1,5 @@
-this.App.module('Lemmas', function (Lemmas, App, Backbone, Marionette) {
+this.App.module('Lemmas', function (Lemmas, App) {
+	'use strict';
 
   // Initializer
   App.addInitializer(function () {

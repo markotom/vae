@@ -1,4 +1,4 @@
-this.App.module('Controllers', function (Controllers, App, Backbone, Marionette, $, _) {
+this.App.module('Controllers', function (Controllers, App, Backbone) {
   'use strict';
 
   Controllers.Post = Controllers.Application.extend({

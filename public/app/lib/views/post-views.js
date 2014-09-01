@@ -1,4 +1,4 @@
-this.App.module('Views', function (Views, App, Backbone, Marionette, $, _) {
+this.App.module('Views', function (Views, App, Backbone, Marionette, $) {
   'use strict';
 
   Views.Post = {};

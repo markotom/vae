@@ -1,4 +1,4 @@
-this.App.module('Entities', function (Entities, App, Backbone) {
+this.App.module('Entities', function (Entities, App) {
   'use strict';
 
   // Model

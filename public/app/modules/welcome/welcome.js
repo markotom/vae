@@ -1,4 +1,4 @@
-this.App.module('Welcome', function (Welcome, App) {
+this.App.module('Welcome', function (Welcome) {
   'use strict';
 
   // Initialize module

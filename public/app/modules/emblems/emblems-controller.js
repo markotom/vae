@@ -1,4 +1,5 @@
 this.App.module('Emblems', function (Emblems, App, Backbone, Marionette) {
+	'use strict';
 
   // Router
   Emblems.Router = Marionette.AppRouter.extend({

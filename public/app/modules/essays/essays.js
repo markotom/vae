@@ -1,4 +1,5 @@
-this.App.module('Essays', function (Essays, App, Backbone, Marionette) {
+this.App.module('Essays', function (Essays, App) {
+	'use strict';
 
   // Initializer
   App.addInitializer(function () {
