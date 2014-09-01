@@ -30,13 +30,29 @@ this.App.module('Header', function (Header, App, Backbone, Marionette) {
       return this.options;
     },
     onShow: function () {
-      $('.chosen-select').chosen({
+      this.select = $('.chosen-select');
+
+      this.select.chosen({
         no_results_text: 'No se encontró ningún resultado con'
       });
 
-      $('.chosen-select').change(function () {
+      this.select.change(function () {
         Backbone.history.navigate($(this).val());
       });
+
+      this.setSelected();
+      Backbone.history.on('route', this.setSelected, this);
+    },
+    setSelected: function () {
+      var current = this.select.find('option[value$="'+ Backbone.history.fragment +'"]');
+
+      $('.chosen-select option').prop('selected', false);
+
+      if (current) {
+        current.prop('selected', true)​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​;
+      }
+
+      this.select.trigger('chosen:updated');
     }
   });
 });
