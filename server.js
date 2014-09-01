@@ -46,7 +46,7 @@ var getDataFromWordpress = function () {
           // http://en.wikipedia.org/wiki/Stop_words
           var words = keyword_extractor.extract(d.content, {
             language: 'spanish',
-            return_changed_case: true
+            return_changed_case: false
           });
 
           d.words = _.chain(words).countBy().value();
