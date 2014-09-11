@@ -6,6 +6,9 @@ var config = require('./server/config'),
     WP = require('wordpress-rest-api'),
     keyword_extractor = require('keyword-extractor'),
     wuzzy = require('wuzzy'),
+    Retext = require('retext'),
+    search = require('retext-search'),
+    retext = new Retext().use(search),
     _ = require('lodash');
 
 // Wordpress Rest API (client)
@@ -146,6 +149,75 @@ server.get('/api/1.0/types/:type/:id', function (req, res) {
   });
 });
 
+// Too slow, can you do it faster?
+server.get('/api/1.0/search', function (req, res) {
+  var posts = [];
+
+  if (req.query.q) {
+    // Get contents
+    var contents = server.get('contents');
+        contents = _.chain(contents).pluck().flatten().value();
+
+    // Remove symbols except letters
+    var needle = req.query.q.replace(/[-'`~!@#$%^&*()_|+=¿?;:'",.<>\{\}\[\]\\\/]/gi, '');
+    // Extract keywords with stop words
+    var keywords = keyword_extractor.extract(needle, { language: 'spanish' });
+
+    // For each content (post)
+    contents.forEach(function (post) {
+      // Strip html tags of post content
+      var content = post.content.replace(/<[^>]+>/ig, '');
+      // Parse with retext
+      content = retext.parse(content);
+      // Search all keywords
+      var matches = content.searchAll(keywords);
+
+      if (matches.length > 0) {
+        // Matches sort by length
+        matches = _.sortBy(matches, function (match) {
+          return -match.matches.length;
+        });
+
+        var _post = {
+          id: post.ID,
+          title: post.title,
+          matches: matches[0]
+        };
+
+        if (post.terms.types && post.terms.types[0]) {
+          _post.url = '#/' + post.terms.types[0].slug + '/' + post.ID;
+        }
+
+        // Push object into array posts
+        posts.push(_post);
+      }
+    });
+
+    // Array format
+    posts = _.chain(posts)
+      .groupBy('id')
+      .map(function (post) {
+        return {
+          id: post[0].id,
+          title: post[0].title,
+          url: post[0].url,
+          matches: _.map(post, function (p) {
+            return p.matches.node.toString();
+          }),
+          size: _.reduce(post, function (sum, p) {
+            return sum + p.matches.matches.length;
+          }, 0)
+        };
+      })
+      .sortBy(function (post) {
+        return -post.size;
+      })
+      .value();
+
+  }
+
+  res.json(posts);
+});
 
 // Start server
 if (!module.parent) {
