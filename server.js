@@ -112,8 +112,8 @@ var getDataFromWordpress = function () {
     });
 };
 
-// Get data from Wordpress hourly
-setInterval(getDataFromWordpress, 1 * 60 * 60 * 1000);
+// Get data from Wordpress
+setInterval(getDataFromWordpress, 1 * 60 * 60 * 6000);
 getDataFromWordpress();
 
 
