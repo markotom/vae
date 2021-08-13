@@ -14,6 +14,6 @@ results
 .DS_Store
 
 node_modules/
-public/components/
+# public/components/
 public/index.ejs
 public/built
