@@ -2,6 +2,7 @@ FROM node:10-alpine
 RUN apk add python gcc g++ make curl
 
 ARG WORKING_DIR=/vae
+ARG PORT=5858
 
 RUN mkdir -p $WORKING_DIR
 WORKDIR $WORKING_DIR
