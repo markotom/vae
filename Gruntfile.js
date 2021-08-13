@@ -180,6 +180,11 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-jst');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  grunt.registerTask('build', ['less:production']);
+  grunt.registerTask('build:production', [
+    'less:production',
+    'preprocess:production',
+    'jst',
+    'uglify:production',
+  ]);
 
 };
