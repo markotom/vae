@@ -7,11 +7,10 @@ RUN mkdir -p $WORKING_DIR
 WORKDIR $WORKING_DIR
 
 COPY package.json $WORKING_DIR
-RUN npm i -g bower grunt pm2
+RUN npm i -g grunt pm2
 RUN npm install
 
 COPY . $WORKING_DIR/
-RUN bower install --allow-root
 RUN grunt build:production
 
 RUN pm2 install pm2-logrotate
