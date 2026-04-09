@@ -10,12 +10,12 @@ RUN mkdir -p $WORKING_DIR
 WORKDIR $WORKING_DIR
 
 COPY package.json $WORKING_DIR
-RUN npm i -g grunt pm2
+RUN npm i -g grunt
 RUN npm install
 
 COPY . $WORKING_DIR/
 RUN grunt build:production
 
-RUN pm2 install pm2-logrotate
+ENV NODE_ENV=production
 
-CMD ["pm2-runtime", "ecosystem.config.js", "--env", "production", "--only", "app"]
+CMD ["node", "./server.js"]
